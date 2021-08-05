@@ -47,4 +47,4 @@
 
 
   roles:
-    - ovirt.vm_infra
+    - ovirt.ovirt.vm_infra
