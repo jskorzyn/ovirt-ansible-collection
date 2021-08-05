@@ -1,0 +1,50 @@
+---
+- name: RHV infra
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    # Contains encrypted `engine_password` varibale using ansible-vault
+    #- passwords.yml
+
+  vars:
+    #engine_fqdn: ovirt-engine.example.com
+    #engine_user: admin@internal
+    #engine_cafile: /etc/pki/ovirt-engine/ca.pem
+
+    debug_vm_create: yes
+    wait_for_ip: yes
+    
+    ex_memory: 1GiB
+    ex_tag:
+      - pgsql
+      - httpd
+    ex_disk_size: 3GiB
+    ex_name: dbvm01
+    
+    db_vm:
+      state: running
+      cluster: DemoLab
+      template: rhel7vm-template
+      memory: 1GiB
+      memory_max: 2GiB
+      cores: 1
+      tag:
+        - db
+        - dbvm
+      disks:
+        - size: "{{ ex_disk_size }}"
+          name: data
+          storage_domain: data-nfs01
+          interface: virtio
+
+    vms:
+      - name: "{{ ex_name }}"
+        memory: "{{ ex_memory }}"
+        profile: "{{ db_vm }}"
+        tag: "{{ ex_tag }}"
+
+
+  roles:
+    - ovirt.vm-infra
