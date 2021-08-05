@@ -44,9 +44,5 @@
         memory: "{{ ex_memory }}"
         profile: "{{ db_vm }}"
         tag: "{{ ex_tag }}"
-
-
   roles:
-    - vm_infra
-  collections:
-    - @NAMESPACE@.@NAME@  
+    - ovirt.ovirt.vm_infra 
